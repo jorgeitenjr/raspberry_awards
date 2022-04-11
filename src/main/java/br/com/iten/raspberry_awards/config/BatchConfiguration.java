@@ -44,6 +44,7 @@ public class BatchConfiguration {
                 .name("NomineeItemReader")
                 .resource(new ClassPathResource(fileToImport))
                 .linesToSkip(1)
+                .encoding("UTF-8")
                 .delimited()
                 .delimiter(Constants.DELIMITER)
                 .names(Constants.CSV_HEADER)
