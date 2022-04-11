@@ -19,3 +19,7 @@ file.to.import=movielist.csv
 ### Rodar teste de integração
 
 ``./mvnw test`` ou ``mvnw test``
+
+### Endpoint com os dados dos produtores
+
+``http://localhost:8080/producers``

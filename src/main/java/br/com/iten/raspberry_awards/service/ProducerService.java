@@ -11,6 +11,7 @@ import java.util.Arrays;
 import java.util.Comparator;
 import java.util.List;
 import java.util.stream.Collectors;
+import java.util.stream.IntStream;
 import java.util.stream.Stream;
 
 @Service
@@ -54,15 +55,20 @@ public class ProducerService {
                 )
                 .flatMap(l -> l)
                 .collect(Collectors.groupingBy(producerStats -> producerStats.getName()))
-                .entrySet().stream().
-                filter(entry -> entry.getValue().size() > 1).
-                map(entry -> {
-                    var list = entry.getValue().stream().map(producerWinnerDto -> producerWinnerDto.getYear()).collect(Collectors.toList());
-                    var min = list.stream().min(Integer::compareTo).orElseThrow();
-                    var max = list.stream().max(Integer::compareTo).orElseThrow();
-                    var interval = max - min;
-                    var producer = new ProducerStatsDto(entry.getKey(), interval, min, max);
-                    return producer;
-                }).collect(Collectors.toList());
+                .entrySet().stream()
+                .filter(entry -> entry.getValue().size() > 1)
+                .map(entry -> {
+                    var list = entry.getValue();
+                    list.sort(Comparator.comparing(ProducerWinnerDto::getYear));
+                    return IntStream.range(1, list.size())
+                            .mapToObj(i -> {
+                                var min = list.get(i - 1).getYear();
+                                var max = list.get(i).getYear();
+                                var interval = max - min;
+                                return new ProducerStatsDto(entry.getKey(), interval, min, max);
+                            });
+                })
+                .flatMap(l -> l)
+                .collect(Collectors.toList());
     }
 }
