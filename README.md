@@ -13,11 +13,9 @@ Arquivos com a lista de indicações importadas ao iniciar a aplicação:
 file.to.import=movielist.csv
 ``
 ### Rodar a API
-``
-mvn spring-boot:run
-``
+
+``./mvnw spring-boot:run`` ou ``mvnw spring-boot:run``
+
 ### Rodar teste de integração
 
-``
-mvn test
-``
+``./mvnw test`` ou ``mvnw test``
